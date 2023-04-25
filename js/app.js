@@ -32,6 +32,7 @@ class Budget {
 
     removeExpense(id){
         this.expenses = this.expenses.filter( expense => expense.id !== id );
+        this.calculateRemaining();
     }
 }
 
@@ -121,6 +122,9 @@ class UI {
         } else if ((budget / 2 ) > remaining ){
             remainingDiv.classList.remove('alert-success');
             remainingDiv.classList.add('alert-warning');
+        } else {
+            remainingDiv.classList.remove('alert-danger', 'alert-warning');
+            remainingDiv.classList.add('alert-success');
         }
 
         // If total is zero or less
@@ -193,6 +197,10 @@ function addExpense(e){
 
 function removeExpense (id) {
     budget.removeExpense(id);
-    const { expenses } = budget;
+    const { expenses, remaining } = budget;
     ui.addExpenseList(expenses);
+
+    ui.updateRemaining(remaining);
+
+    ui.checkBudget(budget);
 }
