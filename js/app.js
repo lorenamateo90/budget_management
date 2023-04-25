@@ -101,6 +101,21 @@ class UI {
     updateRemaining(remaining){
         document.querySelector('#remaining').textContent = remaining;
     }
+
+    checkBudget(budgetObj){
+        const { budget, remaining } = budgetObj;
+
+        const remainingDiv = document.querySelector('.remaining')
+
+        // check 25%
+        if ((budget / 4 ) > remaining ){
+            remainingDiv.classList.remove('alert-success', 'alert-warning');
+            remainingDiv.classList.add('alert-danger');
+        } else if ((budget / 2 ) > remaining ){
+            remainingDiv.classList.remove('alert-success');
+            remainingDiv.classList.add('alert-warning');
+        }
+    };
 }
 
 // Instantiate
@@ -154,6 +169,8 @@ function addExpense(e){
     ui.addExpenseList(expenses);
 
     ui.updateRemaining(remaining);
+
+    ui.checkBudget(budget);
 
     // Reset form
     form.reset();
