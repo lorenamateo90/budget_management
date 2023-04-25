@@ -19,6 +19,10 @@ class Budget {
         this.remaining = Number(budget);
         this.expenses = [];
     }
+
+    newExpense(expense){
+        this.expenses = [...this.expenses,expense];
+    }
 }
 
 class UI {
@@ -53,6 +57,40 @@ class UI {
             divMessage.remove();
         },3000)
     }
+
+    addExpenseList(expenses){
+
+        this.cleanUpHtml(); // clean up previous html
+
+        // Iterate over expenses
+        expenses.forEach( expense => {
+            const { quantity, name, id } = expense;
+
+            // Create LI
+            const newExpense = document.createElement('li');
+            newExpense.className = 'list-group-item d-flex justify-content-between align-items-center';
+            newExpense.dataset.id = id;
+
+            // Add expenses html 
+            newExpense.innerHTML = `${name} <span class='badge badge-primary badge-pill'> ${quantity} </span>`;
+
+            // Delete button
+            const btnDelete = document.createElement('button');
+            btnDelete.classList.add('btn', 'btn-danger', 'delete-expense');
+            btnDelete.innerHTML = 'Borrar &times;';
+            newExpense.appendChild(btnDelete);
+
+            // add to html
+
+            expenditureList.appendChild(newExpense);
+        })
+    }
+
+    cleanUpHtml(){
+        while(expenditureList.firstChild) {
+            expenditureList.removeChild(expenditureList.firstChild);
+        }
+    }
 }
 
 // Instantiate
@@ -81,7 +119,7 @@ function addExpense(e){
 
     // Read form data
     const name = document.querySelector('#expense').value;
-    const quantity = document.querySelector('#quantity').value;
+    const quantity = Number(document.querySelector('#quantity').value);
 
     // Validate
     if (name === '' || quantity === ''){
@@ -91,4 +129,21 @@ function addExpense(e){
         ui.printAlert('Cantidad no válida','error');
         return;
     }
+
+    // Generate object with expense
+    const expense = {name, quantity, id: Date.now()};
+
+    // Add a new expense
+    budget.newExpense(expense);
+
+    // Message ok
+    ui.printAlert('Gasto agregado correctamente');
+
+    // Print Cost
+    const { expenses } = budget;
+    ui.addExpenseList(expenses);
+
+    // Reset form
+    form.reset();
+
 }
