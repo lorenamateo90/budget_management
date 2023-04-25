@@ -21,7 +21,13 @@ class Budget {
     }
 
     newExpense(expense){
-        this.expenses = [...this.expenses,expense];
+        this.expenses = [...this.expenses, expense];
+        this.calculateRemaining();
+    }
+
+    calculateRemaining(){
+        const spent = this.expenses.reduce((total, expense) => total + expense.quantity, 0);
+        this.remaining = this.budget - spent;
     }
 }
 
@@ -91,6 +97,10 @@ class UI {
             expenditureList.removeChild(expenditureList.firstChild);
         }
     }
+
+    updateRemaining(remaining){
+        document.querySelector('#remaining').textContent = remaining;
+    }
 }
 
 // Instantiate
@@ -140,8 +150,10 @@ function addExpense(e){
     ui.printAlert('Gasto agregado correctamente');
 
     // Print Cost
-    const { expenses } = budget;
+    const { expenses, remaining } = budget;
     ui.addExpenseList(expenses);
+
+    ui.updateRemaining(remaining);
 
     // Reset form
     form.reset();
