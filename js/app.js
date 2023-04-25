@@ -72,7 +72,7 @@ class UI {
             newExpense.dataset.id = id;
 
             // Add expenses html 
-            newExpense.innerHTML = `${name} <span class='badge badge-primary badge-pill'> ${quantity} </span>`;
+            newExpense.innerHTML = `${name} <span class='badge badge-primary badge-pill'> $ ${quantity} </span>`;
 
             // Delete button
             const btnDelete = document.createElement('button');
