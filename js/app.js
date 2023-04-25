@@ -42,7 +42,7 @@ class UI {
     }
 
     printAlert(message, type){
-        // create div
+        // Create div
         const divMessage = document.createElement('div');
         divMessage.classList.add('text-center','alert');
 
@@ -66,7 +66,7 @@ class UI {
 
     addExpenseList(expenses){
 
-        this.cleanUpHtml(); // clean up previous html
+        this.cleanUpHtml(); // Clean up previous html
 
         // Iterate over expenses
         expenses.forEach( expense => {
@@ -86,7 +86,7 @@ class UI {
             btnDelete.innerHTML = 'Borrar &times;';
             newExpense.appendChild(btnDelete);
 
-            // add to html
+            // Add to html
 
             expenditureList.appendChild(newExpense);
         })
@@ -107,13 +107,20 @@ class UI {
 
         const remainingDiv = document.querySelector('.remaining')
 
-        // check 25%
+        // Check 25%
         if ((budget / 4 ) > remaining ){
             remainingDiv.classList.remove('alert-success', 'alert-warning');
             remainingDiv.classList.add('alert-danger');
         } else if ((budget / 2 ) > remaining ){
             remainingDiv.classList.remove('alert-success');
             remainingDiv.classList.add('alert-warning');
+        }
+
+        // If total is zero or less
+        if ( remaining <= 0) {
+            ui.printAlert('El presupuesto se ha agotado', 'error');
+
+            form.querySelector('button[type="submit"]').disabled = true;
         }
     };
 }
