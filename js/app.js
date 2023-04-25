@@ -29,6 +29,10 @@ class Budget {
         const spent = this.expenses.reduce((total, expense) => total + expense.quantity, 0);
         this.remaining = this.budget - spent;
     }
+
+    removeExpense(id){
+        this.expenses = this.expenses.filter( expense => expense.id !== id );
+    }
 }
 
 class UI {
@@ -84,6 +88,9 @@ class UI {
             const btnDelete = document.createElement('button');
             btnDelete.classList.add('btn', 'btn-danger', 'delete-expense');
             btnDelete.innerHTML = 'Borrar &times;';
+            btnDelete.onclick = () => {
+                removeExpense(id);
+            }
             newExpense.appendChild(btnDelete);
 
             // Add to html
@@ -182,4 +189,10 @@ function addExpense(e){
     // Reset form
     form.reset();
 
+}
+
+function removeExpense (id) {
+    budget.removeExpense(id);
+    const { expenses } = budget;
+    ui.addExpenseList(expenses);
 }
